@@ -1,40 +1,33 @@
-import { NavLink } from 'react-router-dom'
-import { HiOutlineChartBar, HiOutlineCollection, HiOutlineUserGroup, HiOutlinePlusCircle, HiOutlineCog } from 'react-icons/hi'
+import { Link, useLocation } from 'react-router-dom'
+import { HiViewGrid, HiAcademicCap, HiUserGroup } from 'react-icons/hi'
 
-const AdminSidebar = () => {
-  const links = [
-    { to: '/admin', icon: HiOutlineChartBar, label: 'Dashboard', end: true },
-    { to: '/admin/courses', icon: HiOutlineCollection, label: 'Manage Courses' },
-    { to: '/admin/courses/add', icon: HiOutlinePlusCircle, label: 'Add Course' },
-    { to: '/admin/users', icon: HiOutlineUserGroup, label: 'Manage Users' },
-  ]
+const links = [
+  { to: '/admin', icon: HiViewGrid, label: 'Dashboard', end: true },
+  { to: '/admin/courses', icon: HiAcademicCap, label: 'Courses' },
+  { to: '/admin/users', icon: HiUserGroup, label: 'Users' },
+]
 
+export default function AdminSidebar() {
+  const { pathname } = useLocation()
   return (
-    <aside className="w-64 bg-white border-r border-slate-200 min-h-[calc(100vh-4rem)] p-4 hidden lg:block">
-      <div className="mb-6 px-3">
-        <h2 className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Admin Panel</h2>
+    <aside className="w-56 bg-background-100 border-r border-background-300/20 shrink-0 h-full overflow-y-auto">
+      <div className="p-5 border-b border-background-300/20">
+        <Link to="/admin" className="font-bold text-text-950 text-lg tracking-tight hover:text-primary-400 transition-colors duration-300">LearnHub</Link>
+        <p className="text-[10px] text-text-500 uppercase tracking-widest font-semibold mt-0.5">Admin Panel</p>
       </div>
-      <nav className="space-y-1">
-        {links.map((link) => (
-          <NavLink
-            key={link.to}
-            to={link.to}
-            end={link.end}
-            className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                isActive
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-slate-600 hover:bg-slate-50 hover:text-slate-800'
-              }`
-            }
-          >
-            <link.icon className="w-5 h-5" />
-            {link.label}
-          </NavLink>
-        ))}
+      <nav className="p-3 space-y-0.5">
+        {links.map(({ to, icon: Icon, label, end }) => {
+          const active = end ? pathname === to : pathname.startsWith(to)
+          return (
+            <Link key={to} to={to}
+              className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300 ${
+                active ? 'bg-primary-500/15 text-primary-400 border border-primary-500/20' : 'text-text-600 hover:bg-background-200/60 hover:text-text-900'
+              }`}>
+              <Icon className="w-4 h-4 shrink-0" /> {label}
+            </Link>
+          )
+        })}
       </nav>
     </aside>
   )
 }
-
-export default AdminSidebar

@@ -21,17 +21,12 @@ const Profile = () => {
       toast.success('Profile updated!')
     } catch (err) {
       toast.error(err.response?.data?.message || 'Update failed')
-    } finally {
-      setLoading(false)
-    }
+    } finally { setLoading(false) }
   }
 
   const handlePasswordChange = async (e) => {
     e.preventDefault()
-    if (newPassword.length < 6) {
-      toast.error('Password must be at least 6 characters')
-      return
-    }
+    if (newPassword.length < 6) { toast.error('Password must be at least 6 characters'); return }
     setLoading(true)
     try {
       await userAPI.changePassword({ currentPassword, newPassword })
@@ -39,78 +34,71 @@ const Profile = () => {
       setCurrentPassword('')
       setNewPassword('')
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to change password')
-    } finally {
-      setLoading(false)
-    }
+      toast.error(err.response?.data?.message || 'Failed')
+    } finally { setLoading(false) }
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <div className="bg-white border-b border-slate-200">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8">
-          <h1 className="text-2xl font-bold text-slate-800">My Profile</h1>
+    <div className="min-h-screen bg-background-50">
+      <div className="bg-background-100/50 py-8 border-b border-background-300/20">
+        <div className="max-w-2xl mx-auto px-4 text-center animate-slide-up">
+          <div className="w-16 h-16 bg-primary-500 rounded-xl flex items-center justify-center text-text-950 text-2xl font-bold mx-auto mb-3 shadow-glow-primary">
+            {user?.name?.charAt(0)?.toUpperCase()}
+          </div>
+          <h1 className="text-xl font-bold text-text-950 mb-0.5">{user?.name}</h1>
+          <p className="text-sm text-text-600 mb-2">{user?.email}</p>
+          <span className="inline-block px-3 py-0.5 bg-primary-500/15 text-primary-400 text-xs font-semibold rounded-md capitalize">{user?.role}</span>
         </div>
       </div>
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 space-y-6">
-        <div className="bg-white rounded-2xl border border-slate-200/60 p-8">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="w-16 h-16 bg-gradient-to-br from-primary to-accent rounded-full flex items-center justify-center text-white text-2xl font-bold">
-              {user?.name?.charAt(0)?.toUpperCase()}
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold text-slate-800">{user?.name}</h2>
-              <p className="text-sm text-slate-500">{user?.email}</p>
-              <span className="inline-block mt-1 px-2.5 py-0.5 bg-primary/10 text-primary text-xs font-semibold rounded-full capitalize">{user?.role}</span>
-            </div>
-          </div>
 
+      <div className="max-w-2xl mx-auto px-4 -mt-4 pb-12 space-y-5">
+        <div className="bg-background-200 rounded-xl border border-background-300/30 p-6 shadow-soft animate-slide-up delay-100">
           <form onSubmit={handleProfileUpdate} className="space-y-4">
-            <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wider">Edit Profile</h3>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Name</label>
+            <h3 className="text-xs font-bold text-text-500 uppercase tracking-wider">Profile</h3>
+            <div className="group">
+              <label className="block text-sm font-medium text-text-700 mb-1.5">Name</label>
               <div className="relative">
-                <HiUser className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <HiUser className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-500 group-focus-within:text-primary-400 transition-colors duration-300" />
                 <input type="text" value={name} onChange={(e) => setName(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all" />
+                  className="input-field pl-10" />
               </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Email</label>
+            <div className="group">
+              <label className="block text-sm font-medium text-text-700 mb-1.5">Email</label>
               <div className="relative">
-                <HiMail className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <HiMail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-500 group-focus-within:text-primary-400 transition-colors duration-300" />
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                  className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all" />
+                  className="input-field pl-10" />
               </div>
             </div>
             <button type="submit" disabled={loading}
-              className="px-6 py-2.5 bg-gradient-to-r from-primary to-accent text-white font-semibold rounded-xl text-sm hover:shadow-lg transition-all disabled:opacity-60">
+              className="btn-primary active:scale-95">
               {loading ? 'Saving...' : 'Save Changes'}
             </button>
           </form>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200/60 p-8">
+        <div className="bg-background-200 rounded-xl border border-background-300/30 p-6 shadow-soft animate-slide-up delay-200">
           <form onSubmit={handlePasswordChange} className="space-y-4">
-            <h3 className="text-sm font-semibold text-slate-700 uppercase tracking-wider">Change Password</h3>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Current Password</label>
+            <h3 className="text-xs font-bold text-text-500 uppercase tracking-wider">Change Password</h3>
+            <div className="group">
+              <label className="block text-sm font-medium text-text-700 mb-1.5">Current Password</label>
               <div className="relative">
-                <HiLockClosed className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <HiLockClosed className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-500 group-focus-within:text-primary-400 transition-colors duration-300" />
                 <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} required
-                  className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all" />
+                  className="input-field pl-10" />
               </div>
             </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">New Password</label>
+            <div className="group">
+              <label className="block text-sm font-medium text-text-700 mb-1.5">New Password</label>
               <div className="relative">
-                <HiLockClosed className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
+                <HiLockClosed className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-500 group-focus-within:text-primary-400 transition-colors duration-300" />
                 <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required
-                  className="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary transition-all" />
+                  className="input-field pl-10" />
               </div>
             </div>
             <button type="submit" disabled={loading}
-              className="px-6 py-2.5 bg-slate-800 text-white font-semibold rounded-xl text-sm hover:bg-slate-700 transition-all disabled:opacity-60">
+              className="btn-secondary active:scale-95">
               Change Password
             </button>
           </form>

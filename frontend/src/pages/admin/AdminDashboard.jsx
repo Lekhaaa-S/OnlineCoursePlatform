@@ -1,53 +1,35 @@
-import { useState, useEffect } from 'react'
-import { userAPI, courseAPI, enrollmentAPI } from '../../services/api'
-import { HiUsers, HiCollection, HiCurrencyDollar, HiTrendingUp } from 'react-icons/hi'
+import { HiUsers, HiBookOpen, HiCurrencyDollar, HiTrendingUp } from 'react-icons/hi'
+
+const StatCard = ({ icon: Icon, label, value, color }) => (
+  <div className="bg-background-200 rounded-xl border border-background-300/30 p-5 card-hover animate-scale-in hover:border-primary-500/15">
+    <div className="flex items-center gap-4">
+      <div className={`w-11 h-11 rounded-xl flex items-center justify-center ${color}`}>
+        <Icon className="w-5 h-5" />
+      </div>
+      <div>
+        <div className="text-2xl font-bold text-text-950">{value}</div>
+        <div className="text-sm text-text-600 font-medium">{label}</div>
+      </div>
+    </div>
+  </div>
+)
 
 const AdminDashboard = () => {
-  const [stats, setStats] = useState({ totalUsers: 0, totalCourses: 0, totalRevenue: 0, totalEnrollments: 0 })
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
-    const fetchStats = async () => {
-      try {
-        const { data } = await userAPI.getStats()
-        setStats(data)
-      } catch (err) {
-        console.error('Failed to fetch stats:', err)
-      } finally {
-        setLoading(false)
-      }
-    }
-    fetchStats()
-  }, [])
-
-  const cards = [
-    { label: 'Total Users', value: stats.totalUsers || 0, icon: HiUsers, color: 'from-blue-500 to-cyan-500', bg: 'bg-blue-50' },
-    { label: 'Total Courses', value: stats.totalCourses || 0, icon: HiCollection, color: 'from-purple-500 to-violet-500', bg: 'bg-purple-50' },
-    { label: 'Enrollments', value: stats.totalEnrollments || 0, icon: HiTrendingUp, color: 'from-green-500 to-emerald-500', bg: 'bg-green-50' },
-    { label: 'Revenue', value: `₹${stats.totalRevenue || 0}`, icon: HiCurrencyDollar, color: 'from-amber-500 to-orange-500', bg: 'bg-amber-50' },
+  const stats = [
+    { icon: HiUsers, label: 'Users', value: '-', color: 'bg-primary-500/15 text-primary-400' },
+    { icon: HiBookOpen, label: 'Courses', value: '-', color: 'bg-accent-500/15 text-accent-500' },
+    { icon: HiCurrencyDollar, label: 'Revenue', value: '-', color: 'bg-secondary-500/15 text-secondary-400' },
+    { icon: HiTrendingUp, label: 'Enrollments', value: '-', color: 'bg-primary-500/10 text-primary-300' },
   ]
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-slate-800 mb-6">Admin Dashboard</h1>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        {cards.map((card, i) => (
-          <div key={i} className="bg-white rounded-2xl border border-slate-200/60 p-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className={`w-12 h-12 ${card.bg} rounded-xl flex items-center justify-center`}>
-                <card.icon className={`w-6 h-6 bg-gradient-to-r ${card.color} bg-clip-text`} style={{ color: '#6366f1' }} />
-              </div>
-            </div>
-            <div className="text-2xl font-bold text-slate-800">
-              {loading ? <div className="h-8 w-16 bg-slate-200 rounded animate-pulse"></div> : card.value}
-            </div>
-            <div className="text-sm text-slate-500">{card.label}</div>
-          </div>
-        ))}
+    <div className="animate-slide-up">
+      <h1 className="text-xl font-bold text-text-950 mb-6">Dashboard</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        {stats.map((s, i) => <StatCard key={i} {...s} />)}
       </div>
-      <div className="bg-white rounded-2xl border border-slate-200/60 p-6">
-        <h2 className="text-lg font-semibold text-slate-800 mb-4">Recent Activity</h2>
-        <p className="text-sm text-slate-500">No recent activity to display.</p>
+      <div className="bg-background-200 rounded-xl border border-background-300/30 p-6 text-center">
+        <p className="text-sm text-text-500">Connect the backend to see live stats.</p>
       </div>
     </div>
   )

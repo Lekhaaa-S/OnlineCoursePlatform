@@ -2,7 +2,10 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { courseAPI } from '../services/api'
 import CourseCard from '../components/CourseCard'
-import { HiArrowRight, HiAcademicCap, HiCog, HiClock, HiGlobe } from 'react-icons/hi'
+import {
+  HiArrowRight, HiAcademicCap, HiSparkles, HiPlay, HiCheckCircle,
+  HiGlobeAlt, HiChip, HiDeviceMobile, HiCloud, HiShieldCheck, HiChartBar,
+} from 'react-icons/hi'
 
 const Home = () => {
   const [featuredCourses, setFeaturedCourses] = useState([])
@@ -19,69 +22,113 @@ const Home = () => {
     fetchCourses()
   }, [])
 
-  const stats = [
-    { icon: HiAcademicCap, label: 'Students', value: '10,000+' },
-    { icon: HiCog, label: 'Courses', value: '50+' },
-    { icon: HiClock, label: 'Hours of Content', value: '500+' },
-    { icon: HiGlobe, label: 'Countries', value: '30+' },
+  const categories = [
+    { name: 'Web Development', icon: HiGlobeAlt },
+    { name: 'Data Science', icon: HiChartBar },
+    { name: 'AI & ML', icon: HiChip },
+    { name: 'Mobile Dev', icon: HiDeviceMobile },
+    { name: 'Cloud & DevOps', icon: HiCloud },
+    { name: 'Cyber Security', icon: HiShieldCheck },
   ]
 
-  const categories = [
-    { name: 'Web Development', color: 'from-blue-500 to-cyan-500', emoji: '🌐' },
-    { name: 'Data Science', color: 'from-green-500 to-emerald-500', emoji: '📊' },
-    { name: 'AI & ML', color: 'from-purple-500 to-violet-500', emoji: '🤖' },
-    { name: 'Mobile Development', color: 'from-orange-500 to-red-500', emoji: '📱' },
-    { name: 'Cloud & DevOps', color: 'from-indigo-500 to-blue-500', emoji: '☁️' },
-    { name: 'Cyber Security', color: 'from-rose-500 to-pink-500', emoji: '🔐' },
+  const stats = [
+    { value: '12K+', label: 'Students learning right now' },
+    { value: '180+', label: 'Project-based courses' },
+    { value: '96%', label: 'Would recommend a course' },
+    { value: '4.8/5', label: 'Average course rating' },
   ]
 
   return (
-    <div>
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-72 h-72 bg-primary rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-20 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
-        </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 relative">
-          <div className="max-w-3xl">
-            <span className="inline-block px-4 py-1.5 bg-primary/20 text-primary-light text-sm font-medium rounded-full mb-6">
-              Launch Your Tech Career
-            </span>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              Learn skills that{' '}
-              <span className="bg-gradient-to-r from-primary-light to-secondary bg-clip-text text-transparent">
-                matter today
+    <div className="bg-background-50 overflow-x-hidden">
+      {/* Hero — dark canvas, color used only as ambient light */}
+      <section className="relative border-b border-background-300/20">
+        <div className="absolute inset-0 dot-grid opacity-40"></div>
+        <div className="absolute -top-24 -left-24 w-[420px] h-[420px] rounded-full glow-orb-primary animate-drift"></div>
+        <div className="absolute top-1/3 -right-32 w-[380px] h-[380px] rounded-full glow-orb-accent animate-drift" style={{ animationDelay: '2s' }}></div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left: copy */}
+            <div className="animate-slide-up">
+              <span className="eyebrow mb-6">
+                <HiSparkles className="w-3.5 h-3.5" /> New cohorts open every month
               </span>
-            </h1>
-            <p className="text-lg text-slate-300 mb-8 max-w-xl leading-relaxed">
-              Join thousands of learners mastering in-demand tech skills through hands-on courses built by industry experts.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link to="/courses"
-                className="inline-flex items-center gap-2 px-8 py-3.5 bg-gradient-to-r from-primary to-accent text-white font-semibold rounded-xl hover:shadow-xl hover:shadow-primary/25 transition-all duration-300">
-                Explore Courses <HiArrowRight className="w-5 h-5" />
-              </Link>
-              <Link to="/register"
-                className="inline-flex items-center gap-2 px-8 py-3.5 border border-slate-600 text-slate-300 font-semibold rounded-xl hover:bg-white/5 transition-all">
-                Get Started Free
-              </Link>
+              <h1 className="text-4xl md:text-6xl font-black text-text-950 leading-[1.05] tracking-tight mb-6">
+                Learn skills
+                <br />
+                that actually <span className="text-gradient-accent">ship.</span>
+              </h1>
+              <p className="text-lg text-text-600 mb-9 max-w-md leading-relaxed">
+                Project-based courses built by industry practitioners. No fluff,
+                no filler videos — just the exact path from zero to shipped.
+              </p>
+              <div className="flex flex-wrap gap-3 mb-12">
+                <Link to="/courses" className="btn-primary inline-flex items-center gap-2 text-sm shadow-glow-primary">
+                  Browse Courses <HiArrowRight className="w-4 h-4" />
+                </Link>
+                <Link to="/register" className="btn-secondary inline-flex items-center gap-2 text-sm">
+                  Create Account
+                </Link>
+              </div>
+
+              <div className="flex items-center gap-6">
+                <div className="flex -space-x-3">
+                  {['A', 'S', 'R', 'K'].map((l, i) => (
+                    <div key={i} className="w-9 h-9 rounded-full bg-secondary-500 border-2 border-background-50 flex items-center justify-center text-xs font-bold text-text-950">
+                      {l}
+                    </div>
+                  ))}
+                </div>
+                <p className="text-sm text-text-600">
+                  <span className="text-text-950 font-semibold">12,000+</span> learners already building
+                </p>
+              </div>
+            </div>
+
+            {/* Right: floating course-preview mockup — signature element.
+                Each piece owns its own column so nothing overlaps another's text. */}
+            <div className="relative h-[440px] hidden lg:block animate-scale-in">
+              {/* top-right: video card */}
+              <div className="absolute top-0 right-2 w-64 gradient-border rounded-2xl shadow-card p-4 animate-card-tilt" style={{ '--rot': '2deg', '--tilt': '-4deg' }}>
+                <div className="h-32 rounded-xl bg-gradient-to-br from-primary-500/45 to-secondary-500/45 flex items-center justify-center mb-3">
+                  <div className="w-11 h-11 rounded-full bg-text-950/95 flex items-center justify-center">
+                    <HiPlay className="w-5 h-5 text-primary-600 ml-0.5" />
+                  </div>
+                </div>
+                <p className="text-sm font-semibold text-text-950 mb-2 truncate">Building APIs with FastAPI</p>
+                <div className="h-1.5 rounded-full bg-background-300/50 overflow-hidden">
+                  <div className="h-full w-2/3 rounded-full bg-accent-500"></div>
+                </div>
+              </div>
+
+              {/* middle-left: stat badge, well clear of both cards horizontally */}
+              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-40 h-40 rounded-2xl bg-background-200/95 border border-background-300/40 flex flex-col items-center justify-center gap-1.5 shadow-card animate-breathe">
+                <HiAcademicCap className="w-8 h-8 text-primary-400" />
+                <span className="text-2xl font-black text-text-950">180+</span>
+                <span className="text-xs text-text-600">live courses</span>
+              </div>
+
+              {/* bottom-right: progress card, clear of the top card vertically */}
+              <div className="absolute bottom-0 right-6 w-60 gradient-border rounded-2xl shadow-card p-4 animate-card-tilt" style={{ '--rot': '-1deg', '--tilt': '5deg', animationDelay: '1.2s' }}>
+                <div className="flex items-center gap-2 mb-2">
+                  <HiCheckCircle className="w-5 h-5 text-accent-500 shrink-0" />
+                  <p className="text-sm font-semibold text-text-950">Module 4 complete</p>
+                </div>
+                <p className="text-xs text-text-600">React Query &amp; caching strategies</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-12 bg-white border-b border-slate-100">
+      {/* Stats strip */}
+      <section className="py-14 bg-background-100/40 border-b border-background-300/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, i) => (
-              <div key={i} className="text-center">
-                <div className="inline-flex items-center justify-center w-12 h-12 bg-primary/10 rounded-xl mb-3">
-                  <stat.icon className="w-6 h-6 text-primary" />
-                </div>
-                <div className="text-2xl font-bold text-slate-800">{stat.value}</div>
-                <div className="text-sm text-slate-500">{stat.label}</div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {stats.map((s, i) => (
+              <div key={i} className="p-5 rounded-xl bg-background-200/60 border border-background-300/30 animate-fade-in" style={{ animationDelay: `${i * 0.06}s` }}>
+                <p className="text-2xl md:text-3xl font-black text-text-950 mb-1">{s.value}</p>
+                <p className="text-xs text-text-600 leading-snug">{s.label}</p>
               </div>
             ))}
           </div>
@@ -89,18 +136,19 @@ const Home = () => {
       </section>
 
       {/* Categories */}
-      <section className="py-20 bg-slate-50">
+      <section className="py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-slate-800 mb-3">Browse by Category</h2>
-            <p className="text-slate-500 max-w-lg mx-auto">Choose from a wide range of courses across multiple domains</p>
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-text-950 mb-1">Browse by category</h2>
+            <p className="text-text-600 text-sm">Find courses in the area that interests you</p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
             {categories.map((cat, i) => (
               <Link key={i} to={`/courses?category=${encodeURIComponent(cat.name)}`}
-                className="group p-6 bg-white rounded-2xl border border-slate-200/60 text-center hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
-                <span className="text-3xl block mb-3">{cat.emoji}</span>
-                <span className="text-sm font-semibold text-slate-700 group-hover:text-primary transition-colors">{cat.name}</span>
+                className="group p-5 bg-background-200 rounded-xl border border-background-300/30 text-center card-hover animate-scale-in"
+                style={{ animationDelay: `${i * 0.04}s` }}>
+                <cat.icon className="w-6 h-6 mx-auto mb-2.5 text-primary-400 group-hover:text-accent-400 group-hover:scale-110 transition-all duration-300" />
+                <span className="text-sm font-medium text-text-600 group-hover:text-text-950 transition-colors duration-300">{cat.name}</span>
               </Link>
             ))}
           </div>
@@ -108,45 +156,78 @@ const Home = () => {
       </section>
 
       {/* Featured Courses */}
-      <section className="py-20 bg-white">
+      <section className="py-16 bg-background-100/40 border-y border-background-300/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between mb-12">
+          <div className="flex items-end justify-between mb-8">
             <div>
-              <h2 className="text-3xl font-bold text-slate-800 mb-3">Featured Courses</h2>
-              <p className="text-slate-500">Hand-picked courses to boost your career</p>
+              <h2 className="text-2xl font-bold text-text-950 mb-1">Featured courses</h2>
+              <p className="text-text-600 text-sm">Start learning today</p>
             </div>
-            <Link to="/courses" className="hidden md:inline-flex items-center gap-1 text-primary font-semibold hover:text-primary-dark transition-colors">
-              View All <HiArrowRight className="w-4 h-4" />
+            <Link to="/courses" className="hidden md:inline-flex items-center gap-1 text-sm font-semibold text-primary-400 hover:text-primary-300 transition-colors duration-300 group">
+              View All <HiArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
             </Link>
           </div>
           {featuredCourses.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {featuredCourses.map((course) => (
-                <CourseCard key={course._id} course={course} />
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+              {featuredCourses.map((course, i) => (
+                <div key={course._id} className="animate-slide-up" style={{ animationDelay: `${i * 0.08}s` }}>
+                  <CourseCard course={course} />
+                </div>
               ))}
             </div>
           ) : (
-            <div className="text-center py-16 text-slate-400">
-              <p className="text-lg">No courses available yet. Check back soon!</p>
+            <div className="text-center py-16 bg-background-200 rounded-xl border border-background-300/30">
+              <HiAcademicCap className="w-10 h-10 text-text-500 mx-auto mb-3" />
+              <h3 className="text-lg font-semibold text-text-700 mb-1">No courses yet</h3>
+              <p className="text-sm text-text-500">Courses will appear here once published.</p>
             </div>
           )}
           <div className="text-center mt-8 md:hidden">
-            <Link to="/courses" className="inline-flex items-center gap-1 text-primary font-semibold">
-              View All Courses <HiArrowRight className="w-4 h-4" />
-            </Link>
+            <Link to="/courses" className="text-sm font-semibold text-primary-400 hover:text-primary-300 transition-colors duration-300">View All Courses</Link>
+          </div>
+        </div>
+      </section>
+
+      {/* How it works */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="mb-12 text-center max-w-xl mx-auto">
+            <h2 className="text-2xl font-bold text-text-950 mb-2">How it works</h2>
+            <p className="text-text-600 text-sm">Three steps between you and a shipped project.</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+            <div className="hidden md:block absolute top-10 left-[16.5%] right-[16.5%] h-px bg-gradient-to-r from-primary-500/40 via-secondary-500/40 to-accent-500/40"></div>
+            {[
+              { num: '01', title: 'Choose', desc: 'Browse courses and pick what you want to learn.' },
+              { num: '02', title: 'Enroll', desc: 'Pay once via Razorpay. Lifetime access, no subscriptions.' },
+              { num: '03', title: 'Learn', desc: 'Watch lessons, track progress, and build real projects.' },
+            ].map((item, i) => (
+              <div key={i} className="relative p-6 bg-background-200 rounded-xl border border-background-300/30 card-hover group hover:border-primary-500/20">
+                <span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-primary-500/15 text-primary-400 font-bold text-sm mb-4 group-hover:bg-primary-500/25 transition-colors duration-300">
+                  {item.num}
+                </span>
+                <h3 className="text-lg font-bold text-text-950 mb-1.5">{item.title}</h3>
+                <p className="text-sm text-text-600 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-20 bg-gradient-to-r from-primary to-accent">
-        <div className="max-w-4xl mx-auto px-4 text-center text-white">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to Start Learning?</h2>
-          <p className="text-lg text-white/80 mb-8">Join our community of learners and unlock your potential today.</p>
-          <Link to="/register"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-white text-primary font-bold rounded-xl hover:shadow-xl transition-all duration-300">
-            Get Started for Free <HiArrowRight className="w-5 h-5" />
-          </Link>
+      <section className="py-16">
+        <div className="max-w-5xl mx-auto px-4">
+          <div className="relative rounded-2xl p-12 text-center overflow-hidden border border-background-300/30 bg-background-200">
+            <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full glow-orb-primary"></div>
+            <div className="absolute -bottom-16 -right-16 w-64 h-64 rounded-full glow-orb-accent"></div>
+            <div className="relative">
+              <h2 className="text-3xl font-bold text-text-950 mb-3">Ready to start?</h2>
+              <p className="text-text-600 mb-8 max-w-md mx-auto">Create a free account and explore our course catalog.</p>
+              <Link to="/register" className="btn-primary inline-flex items-center gap-2 shadow-glow-primary px-8 py-3">
+                Get Started <HiArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
         </div>
       </section>
     </div>

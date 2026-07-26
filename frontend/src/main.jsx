@@ -17,12 +17,12 @@ createRoot(document.getElementById('root')).render(
             duration: 3000,
             style: {
               borderRadius: '12px',
-              background: '#1e293b',
-              color: '#f1f5f9',
+              background: '#070514',
+              color: '#ecebfa',
               fontSize: '14px',
             },
             success: {
-              iconTheme: { primary: '#22c55e', secondary: '#fff' },
+              iconTheme: { primary: '#18e767', secondary: '#fff' },
             },
             error: {
               iconTheme: { primary: '#ef4444', secondary: '#fff' },
