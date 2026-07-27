@@ -1,6 +1,12 @@
-// Role Middleware
-//
-// authorize(...roles)
-//   - Returns middleware that checks req.user.role
-//   - If role not in allowed roles → 403 { message: "Access denied" }
-//   - Usage: router.get("/admin/users", protect, authorize("admin"), handler)
+const authorize = (...roles) => {
+  return (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+      return res
+        .status(403)
+        .json({ message: "Access denied. Insufficient permissions." });
+    }
+    next();
+  };
+};
+
+module.exports = authorize;

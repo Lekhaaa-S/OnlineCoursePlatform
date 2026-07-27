@@ -6,3 +6,10 @@
 // POST   /api/courses           → courseController.createCourse       (admin)
 // PUT    /api/courses/:id       → courseController.updateCourse       (admin)
 // DELETE /api/courses/:id       → courseController.deleteCourse       (admin)
+
+const express = require("express");
+const router = express.Router();
+
+// TODO: implement course routes
+
+module.exports = router;

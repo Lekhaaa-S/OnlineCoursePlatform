@@ -1,7 +1,32 @@
-// Auth Middleware
-//
-// protect(req, res, next)
-//   - Extracts token from Authorization: Bearer <token>
-//   - Verifies JWT with process.env.JWT_SECRET
-//   - Attaches req.user = await User.findById(decoded.id)
-//   - Returns 401 { message: "Not authorized" } if no token or invalid
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
+
+const protect = async (req, res, next) => {
+  let token;
+
+  if (
+    req.headers.authorization &&
+    req.headers.authorization.startsWith("Bearer")
+  ) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+
+  if (!token) {
+    return res.status(401).json({ message: "Not authorized, no token" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = await User.findById(decoded.id);
+
+    if (!req.user) {
+      return res.status(401).json({ message: "Not authorized, user not found" });
+    }
+
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Not authorized, token failed" });
+  }
+};
+
+module.exports = protect;

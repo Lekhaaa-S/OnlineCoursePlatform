@@ -7,3 +7,10 @@
 // GET    /api/users/admin/stats         → userController.getAdminStats     (admin)
 // PUT    /api/users/admin/block/:id     → userController.blockUser         (admin)
 // DELETE /api/users/admin/:id           → userController.deleteUser        (admin)
+
+const express = require("express");
+const router = express.Router();
+
+// TODO: implement user routes
+
+module.exports = router;
