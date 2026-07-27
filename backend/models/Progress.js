@@ -1,11 +1,27 @@
-// Progress Model
-// Fields:
-//   userId: ObjectId ref "User" (required)
-//   courseId: ObjectId ref "Course" (required)
-//   completedLessons: [{
-//       moduleIndex: Number
-//       lessonIndex: Number
-//   }]
-//   timestamps: true
-// Unique index on (userId, courseId)
-// Virtual: percentage = (completedLessons / totalLessons) * 100
+const mongoose = require("mongoose");
+
+const progressSchema = new mongoose.Schema(
+  {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+    },
+    courseId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course",
+      required: true,
+    },
+    completedLessons: [
+      {
+        moduleIndex: { type: Number, required: true },
+        lessonIndex: { type: Number, required: true },
+      },
+    ],
+  },
+  { timestamps: true }
+);
+
+progressSchema.index({ userId: 1, courseId: 1 }, { unique: true });
+
+module.exports = mongoose.model("Progress", progressSchema);
