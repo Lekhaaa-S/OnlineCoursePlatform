@@ -1,6 +1,8 @@
 // Course Routes
-// GET    /api/courses
-// GET    /api/courses/:id
-// POST   /api/courses        (admin)
-// PUT    /api/courses/:id    (admin)
-// DELETE /api/courses/:id    (admin)
+// All mounted at /api/courses
+//
+// GET    /api/courses           → courseController.getAllCourses
+// GET    /api/courses/:id       → courseController.getCourseById
+// POST   /api/courses           → courseController.createCourse       (admin)
+// PUT    /api/courses/:id       → courseController.updateCourse       (admin)
+// DELETE /api/courses/:id       → courseController.deleteCourse       (admin)
