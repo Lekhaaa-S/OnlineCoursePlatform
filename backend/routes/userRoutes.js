@@ -1,16 +1,21 @@
-// User Routes
-// All mounted at /api/users
-//
-// PUT    /api/users/profile             → userController.updateProfile     (protected)
-// PUT    /api/users/change-password     → userController.changePassword   (protected)
-// GET    /api/users/admin/users         → userController.getAllUsers       (admin)
-// GET    /api/users/admin/stats         → userController.getAdminStats     (admin)
-// PUT    /api/users/admin/block/:id     → userController.blockUser         (admin)
-// DELETE /api/users/admin/:id           → userController.deleteUser        (admin)
-
 const express = require("express");
 const router = express.Router();
+const {
+  updateProfile,
+  changePassword,
+  getAllUsers,
+  getAdminStats,
+  blockUser,
+  deleteUser,
+} = require("../controllers/userController");
+const protect = require("../middleware/authMiddleware");
+const authorize = require("../middleware/roleMiddleware");
 
-// TODO: implement user routes
+router.put("/profile", protect, updateProfile);
+router.put("/change-password", protect, changePassword);
+router.get("/admin/users", protect, authorize("admin"), getAllUsers);
+router.get("/admin/stats", protect, authorize("admin"), getAdminStats);
+router.put("/admin/block/:id", protect, authorize("admin"), blockUser);
+router.delete("/admin/:id", protect, authorize("admin"), deleteUser);
 
 module.exports = router;
