@@ -1,15 +1,19 @@
-// Course Routes
-// All mounted at /api/courses
-//
-// GET    /api/courses           → courseController.getAllCourses
-// GET    /api/courses/:id       → courseController.getCourseById
-// POST   /api/courses           → courseController.createCourse       (admin)
-// PUT    /api/courses/:id       → courseController.updateCourse       (admin)
-// DELETE /api/courses/:id       → courseController.deleteCourse       (admin)
-
 const express = require("express");
 const router = express.Router();
+const {
+  getAllCourses,
+  getCourseById,
+  createCourse,
+  updateCourse,
+  deleteCourse,
+} = require("../controllers/courseController");
+const protect = require("../middleware/authMiddleware");
+const authorize = require("../middleware/roleMiddleware");
 
-// TODO: implement course routes
+router.get("/", getAllCourses);
+router.get("/:id", getCourseById);
+router.post("/", protect, authorize("admin"), createCourse);
+router.put("/:id", protect, authorize("admin"), updateCourse);
+router.delete("/:id", protect, authorize("admin"), deleteCourse);
 
 module.exports = router;
