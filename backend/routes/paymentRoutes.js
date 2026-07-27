@@ -1,12 +1,9 @@
-// Payment Routes
-// All mounted at /api/payment
-//
-// POST   /api/payment/create-order  → paymentController.createOrder    (protected)
-// POST   /api/payment/verify        → paymentController.verifyPayment  (protected)
-
 const express = require("express");
 const router = express.Router();
+const { createOrder, verifyPayment } = require("../controllers/paymentController");
+const protect = require("../middleware/authMiddleware");
 
-// TODO: implement payment routes
+router.post("/create-order", protect, createOrder);
+router.post("/verify", protect, verifyPayment);
 
 module.exports = router;
