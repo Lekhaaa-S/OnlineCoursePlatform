@@ -1,5 +1,7 @@
+const crypto = require("crypto");
 const User = require("../models/User");
 const generateToken = require("../utils/generateToken");
+const sendEmail = require("../utils/sendEmail");
 
 // POST /api/auth/register
 exports.register = async (req, res) => {
@@ -87,8 +89,24 @@ exports.forgotPassword = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // TODO: generate reset token, save to DB, send email
-    res.json({ message: "Password reset email sent" });
+    const resetToken = user.getResetPasswordToken();
+    await user.save({ validateBeforeSave: false });
+
+    const resetUrl = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
+
+    try {
+      await sendEmail({
+        to: user.email,
+        subject: "Password Reset Request",
+        html: `<p>Click <a href="${resetUrl}">here</a> to reset your password. Link expires in 10 minutes.</p>`,
+      });
+      res.json({ message: "Password reset email sent" });
+    } catch (err) {
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save({ validateBeforeSave: false });
+      res.status(500).json({ message: "Email could not be sent" });
+    }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -99,7 +117,25 @@ exports.resetPassword = async (req, res) => {
   try {
     const { token, password } = req.body;
 
-    // TODO: verify token, find user, update password
+    const hashedToken = crypto
+      .createHash("sha256")
+      .update(token)
+      .digest("hex");
+
+    const user = await User.findOne({
+      resetPasswordToken: hashedToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired token" });
+    }
+
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
     res.json({ message: "Password reset successful" });
   } catch (error) {
     res.status(500).json({ message: error.message });

@@ -1,5 +1,22 @@
-// sendEmail({ to, subject, html })
-//   - Uses nodemailer with SMTP config from .env
-//   - SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS
-//   - FROM_EMAIL as sender
-//   - Used for: password reset, enrollment confirmation
+const nodemailer = require("nodemailer");
+
+const sendEmail = async ({ to, subject, html }) => {
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT,
+    secure: false,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+
+  await transporter.sendMail({
+    from: process.env.FROM_EMAIL,
+    to,
+    subject,
+    html,
+  });
+};
+
+module.exports = sendEmail;
