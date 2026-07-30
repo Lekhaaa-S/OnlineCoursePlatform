@@ -29,9 +29,8 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-background-50">
-      <div className="relative bg-background-100/50 py-8 border-b border-background-300/20 overflow-hidden">
-        <div className="absolute -top-16 right-0 w-56 h-56 rounded-full glow-orb-accent opacity-70"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-slide-up">
+      <div className="bg-background-100/50 py-8 border-b border-background-300/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 animate-slide-up">
           <h1 className="text-2xl font-bold text-text-950 mb-0.5">Welcome back, {user?.name?.split(' ')[0]}</h1>
           <p className="text-sm text-text-600">Your learning dashboard</p>
         </div>

@@ -32,11 +32,11 @@ const Navbar = () => {
   }
 
   return (
-    <nav className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'glass-nav shadow-lg' : 'bg-background-100/95 backdrop-blur-sm border-b border-background-300/20'}`}>
+    <nav className={`sticky top-0 z-50 transition-all duration-300 ${scrolled ? 'glass-nav' : 'bg-background-100/80 backdrop-blur-sm border-b border-background-300/20'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link to="/" className="flex items-center gap-2.5 shrink-0 group">
-            <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:shadow-glow-primary group-hover:scale-105">
+            <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-105">
               <HiAcademicCap className="w-5 h-5 text-text-950" />
             </div>
             <span className="text-lg font-extrabold text-text-950 tracking-tight">LearnHub</span>
@@ -69,7 +69,7 @@ const Navbar = () => {
                 )}
                 <div className="relative group ml-2">
                   <button className="flex items-center gap-2 pl-1 pr-3 py-1 rounded-lg hover:bg-background-200/60 transition-all duration-300">
-                    <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center text-text-950 text-sm font-bold transition-all duration-300 group-hover:shadow-glow-primary">
+                    <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center text-text-950 text-sm font-bold transition-all duration-300">
                       {user?.name?.charAt(0)?.toUpperCase()}
                     </div>
                     <span className="text-sm font-medium text-text-700">{user?.name?.split(' ')[0]}</span>

@@ -40,13 +40,10 @@ const Home = () => {
 
   return (
     <div className="bg-background-50 overflow-x-hidden">
-      {/* Hero — dark canvas, color used only as ambient light */}
-      <section className="relative border-b border-background-300/20">
-        <div className="absolute inset-0 dot-grid opacity-40"></div>
-        <div className="absolute -top-24 -left-24 w-[420px] h-[420px] rounded-full glow-orb-primary animate-drift"></div>
-        <div className="absolute top-1/3 -right-32 w-[380px] h-[380px] rounded-full glow-orb-accent animate-drift" style={{ animationDelay: '2s' }}></div>
+      {/* Hero */}
+      <section className="border-b border-background-300/20">
 
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left: copy */}
             <div className="animate-slide-up">
@@ -63,7 +60,7 @@ const Home = () => {
                 no filler videos — just the exact path from zero to shipped.
               </p>
               <div className="flex flex-wrap gap-3 mb-12">
-                <Link to="/courses" className="btn-primary inline-flex items-center gap-2 text-sm shadow-glow-primary">
+                <Link to="/courses" className="btn-primary inline-flex items-center gap-2 text-sm">
                   Browse Courses <HiArrowRight className="w-4 h-4" />
                 </Link>
                 <Link to="/register" className="btn-secondary inline-flex items-center gap-2 text-sm">
@@ -199,7 +196,7 @@ const Home = () => {
             <div className="hidden md:block absolute top-10 left-[16.5%] right-[16.5%] h-px bg-gradient-to-r from-primary-500/40 via-secondary-500/40 to-accent-500/40"></div>
             {[
               { num: '01', title: 'Choose', desc: 'Browse courses and pick what you want to learn.' },
-              { num: '02', title: 'Enroll', desc: 'Pay once via Razorpay. Lifetime access, no subscriptions.' },
+              { num: '02', title: 'Enroll', desc: 'Pay once via Stripe. Lifetime access, no subscriptions.' },
               { num: '03', title: 'Learn', desc: 'Watch lessons, track progress, and build real projects.' },
             ].map((item, i) => (
               <div key={i} className="relative p-6 bg-background-200 rounded-xl border border-background-300/30 card-hover group hover:border-primary-500/20">
@@ -217,16 +214,12 @@ const Home = () => {
       {/* CTA */}
       <section className="py-16">
         <div className="max-w-5xl mx-auto px-4">
-          <div className="relative rounded-2xl p-12 text-center overflow-hidden border border-background-300/30 bg-background-200">
-            <div className="absolute -top-16 -left-16 w-64 h-64 rounded-full glow-orb-primary"></div>
-            <div className="absolute -bottom-16 -right-16 w-64 h-64 rounded-full glow-orb-accent"></div>
-            <div className="relative">
-              <h2 className="text-3xl font-bold text-text-950 mb-3">Ready to start?</h2>
-              <p className="text-text-600 mb-8 max-w-md mx-auto">Create a free account and explore our course catalog.</p>
-              <Link to="/register" className="btn-primary inline-flex items-center gap-2 shadow-glow-primary px-8 py-3">
-                Get Started <HiArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
+          <div className="rounded-2xl p-12 text-center border border-background-300/30 bg-background-200">
+            <h2 className="text-3xl font-bold text-text-950 mb-3">Ready to start?</h2>
+            <p className="text-text-600 mb-8 max-w-md mx-auto">Create a free account and explore our course catalog.</p>
+            <Link to="/register" className="btn-primary inline-flex items-center gap-2 px-8 py-3">
+              Get Started <HiArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>

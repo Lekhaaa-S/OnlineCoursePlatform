@@ -5,8 +5,7 @@ const CourseCard = ({ course }) => {
   return (
     <Link to={`/courses/${course._id}`} className="group block bg-background-200 rounded-xl border border-background-300/30 overflow-hidden card-hover">
       <div className="relative overflow-hidden">
-        <div className="h-44 bg-gradient-to-br from-primary-500/25 via-secondary-500/20 to-accent-500/10 flex items-center justify-center relative">
-          <div className="absolute inset-0 dot-grid opacity-30"></div>
+        <div className="h-44 bg-gradient-to-br from-primary-500/20 via-secondary-500/15 to-accent-500/8 flex items-center justify-center relative">
           {course.thumbnail ? (
             <img src={course.thumbnail} alt={course.title} className="relative w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out" />
           ) : (

@@ -41,7 +41,7 @@ const Profile = () => {
     <div className="min-h-screen bg-background-50">
       <div className="bg-background-100/50 py-8 border-b border-background-300/20">
         <div className="max-w-2xl mx-auto px-4 text-center animate-slide-up">
-          <div className="w-16 h-16 bg-primary-500 rounded-xl flex items-center justify-center text-text-950 text-2xl font-bold mx-auto mb-3 shadow-glow-primary">
+          <div className="w-16 h-16 bg-primary-500 rounded-xl flex items-center justify-center text-text-950 text-2xl font-bold mx-auto mb-3">
             {user?.name?.charAt(0)?.toUpperCase()}
           </div>
           <h1 className="text-xl font-bold text-text-950 mb-0.5">{user?.name}</h1>

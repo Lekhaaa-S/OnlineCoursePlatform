@@ -111,7 +111,6 @@ const CourseDetail = () => {
   return (
     <div className="min-h-screen bg-background-50">
       <div className="relative bg-background-100/60 py-14 border-b border-background-300/20 overflow-hidden">
-        <div className="absolute inset-0 dot-grid opacity-30"></div>
         <div className="absolute -top-24 -left-10 w-80 h-80 rounded-full glow-orb-primary"></div>
         <div className="absolute top-10 -right-20 w-72 h-72 rounded-full glow-orb-accent"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -128,7 +127,7 @@ const CourseDetail = () => {
             </div>
 
             <div className="lg:col-span-1">
-              <div className="gradient-border rounded-xl shadow-card p-5 sticky top-24 animate-scale-in">
+              <div className="bg-background-200 rounded-xl border border-background-300/30 shadow-card p-5 sticky top-24 animate-scale-in">
                 <div className="mb-4 rounded-lg overflow-hidden">
                   {course.thumbnail ? (
                     <img src={course.thumbnail} alt={course.title} className="w-full h-44 object-cover" />
@@ -140,7 +139,7 @@ const CourseDetail = () => {
                 </div>
                 <div className="text-3xl font-bold text-text-950 mb-1">₹{course.price}</div>
                 <button onClick={handleEnroll} disabled={enrolling}
-                  className="btn-primary w-full mt-4 mb-4 active:scale-[0.98] shadow-glow-primary">
+                  className="btn-primary w-full mt-4 mb-4">
                   {enrolling ? 'Processing...' : 'Enroll Now'}
                 </button>
                 <div className="space-y-2.5 text-sm text-text-600">
@@ -185,8 +184,8 @@ const CourseDetail = () => {
       </div>
 
       {showPayment && clientSecret && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
-          <div className="bg-background-100 rounded-2xl p-6 max-w-md w-full mx-4 border border-background-300/30 shadow-2xl animate-scale-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
+          <div className="bg-background-200 rounded-xl p-6 max-w-md w-full mx-4 border border-background-300/30 shadow-card animate-scale-in">
             <div className="flex items-center justify-between mb-5">
               <h3 className="text-lg font-bold text-text-950">Complete Payment</h3>
               <button onClick={() => setShowPayment(false)} className="p-1 text-text-600 hover:text-text-950 transition-colors">

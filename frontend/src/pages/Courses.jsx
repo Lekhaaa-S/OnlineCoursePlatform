@@ -43,9 +43,8 @@ const Courses = () => {
 
   return (
     <div className="min-h-screen bg-background-50">
-      <div className="relative bg-background-100/50 py-10 border-b border-background-300/20 overflow-hidden">
-        <div className="absolute -top-20 right-10 w-72 h-72 rounded-full glow-orb-primary"></div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="bg-background-100/50 py-10 border-b border-background-300/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <span className="eyebrow mb-3 animate-slide-up">{courses.length || ''} courses live now</span>
           <h1 className="text-3xl font-bold text-text-950 mb-6 animate-slide-up">All Courses</h1>
           <div className="flex flex-col md:flex-row gap-3 animate-slide-up delay-100">

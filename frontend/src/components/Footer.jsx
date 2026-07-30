@@ -8,7 +8,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           <div className="md:col-span-1">
             <Link to="/" className="flex items-center gap-2 mb-4 group">
-              <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:shadow-glow-primary group-hover:scale-105">
+              <div className="w-8 h-8 bg-primary-500 rounded-lg flex items-center justify-center transition-all duration-300 group-hover:scale-105">
                 <HiAcademicCap className="w-5 h-5 text-text-950" />
               </div>
               <span className="text-lg font-extrabold text-text-950 tracking-tight">LearnHub</span>

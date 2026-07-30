@@ -81,7 +81,7 @@ const Reviews = ({ courseId }) => {
             <StarRating value={rating} onChange={setRating} />
           </div>
           <textarea value={comment} onChange={(e) => setComment(e.target.value)} rows="3" placeholder="Share your experience..."
-            className="w-full px-4 py-2.5 bg-background-50 border border-background-300/50 rounded-lg text-sm text-text-950 placeholder:text-text-600 focus:outline-none focus:ring-1 focus:ring-primary-500/50 focus:border-primary-500/50 resize-none transition-all mb-3" />
+            className="input-field resize-none mb-3" />
           <button type="submit" disabled={submitting}
             className="px-5 py-2 bg-primary-500 text-text-950 font-semibold rounded-lg text-sm hover:bg-primary-600 transition-all disabled:opacity-60">
             {submitting ? 'Submitting...' : 'Submit Review'}
