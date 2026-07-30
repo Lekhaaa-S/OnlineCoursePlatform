@@ -1,7 +1,21 @@
-// User Routes
-// PUT    /api/users/profile
-// PUT    /api/users/change-password
-// GET    /api/users/admin/users      (admin)
-// GET    /api/users/admin/stats      (admin)
-// PUT    /api/users/admin/block/:id  (admin)
-// DELETE /api/users/admin/:id        (admin)
+const express = require("express");
+const router = express.Router();
+const {
+  updateProfile,
+  changePassword,
+  getAllUsers,
+  getAdminStats,
+  blockUser,
+  deleteUser,
+} = require("../controllers/userController");
+const protect = require("../middleware/authMiddleware");
+const authorize = require("../middleware/roleMiddleware");
+
+router.put("/profile", protect, updateProfile);
+router.put("/change-password", protect, changePassword);
+router.get("/admin/users", protect, authorize("admin"), getAllUsers);
+router.get("/admin/stats", protect, authorize("admin"), getAdminStats);
+router.put("/admin/block/:id", protect, authorize("admin"), blockUser);
+router.delete("/admin/:id", protect, authorize("admin"), deleteUser);
+
+module.exports = router;
