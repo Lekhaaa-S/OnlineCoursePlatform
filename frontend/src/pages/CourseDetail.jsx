@@ -6,6 +6,7 @@ import { courseAPI, paymentAPI } from '../services/api'
 import { useAuth } from '../context/AuthContext'
 import toast from 'react-hot-toast'
 import { HiClock, HiUsers, HiBookOpen, HiCheckCircle, HiPlay, HiX } from 'react-icons/hi'
+import Reviews from '../components/Reviews'
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY)
 
@@ -178,6 +179,10 @@ const CourseDetail = () => {
           </div>
         </div>
       )}
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <Reviews courseId={id} />
+      </div>
 
       {showPayment && clientSecret && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">

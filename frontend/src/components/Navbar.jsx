@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { HiMenu, HiX, HiSearch, HiUser, HiLogout, HiAcademicCap } from 'react-icons/hi'
+import ThemeToggle from './ThemeToggle'
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth()
@@ -50,6 +51,7 @@ const Navbar = () => {
           </form>
 
           <div className="hidden md:flex items-center gap-1">
+            <ThemeToggle />
             <Link to="/courses" className="px-3 py-2 text-sm font-medium text-text-700 hover:text-text-950 rounded-lg hover:bg-background-200/60 transition-all duration-300">
               Courses
             </Link>
@@ -114,6 +116,10 @@ const Navbar = () => {
             </div>
           </form>
           <Link to="/courses" onClick={() => setMobileOpen(false)} className="block px-3 py-2.5 text-sm font-medium text-text-700 hover:text-text-950 hover:bg-background-200/60 rounded-lg transition-all duration-300">Courses</Link>
+          <div className="px-3 py-2 flex items-center justify-between">
+            <span className="text-sm font-medium text-text-700">Theme</span>
+            <ThemeToggle />
+          </div>
           {isAuthenticated ? (
             <>
               {user?.role === 'user' && <Link to="/dashboard" onClick={() => setMobileOpen(false)} className="block px-3 py-2.5 text-sm font-medium text-text-700 hover:text-text-950 hover:bg-background-200/60 rounded-lg transition-all duration-300">Dashboard</Link>}

@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { useAuth } from '../context/AuthContext'
 import { userAPI } from '../services/api'
 import toast from 'react-hot-toast'
-import { HiUser, HiMail, HiLockClosed } from 'react-icons/hi'
 
 const Profile = () => {
   const { user, updateUser } = useAuth()
@@ -55,24 +54,18 @@ const Profile = () => {
         <div className="bg-background-200 rounded-xl border border-background-300/30 p-6 shadow-soft animate-slide-up delay-100">
           <form onSubmit={handleProfileUpdate} className="space-y-4">
             <h3 className="text-xs font-bold text-text-500 uppercase tracking-wider">Profile</h3>
-            <div className="group">
+            <div>
               <label className="block text-sm font-medium text-text-700 mb-1.5">Name</label>
-              <div className="relative">
-                <HiUser className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-500 group-focus-within:text-primary-400 transition-colors duration-300" />
-                <input type="text" value={name} onChange={(e) => setName(e.target.value)}
-                  className="input-field pl-10" />
-              </div>
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)}
+                className="input-field" />
             </div>
-            <div className="group">
+            <div>
               <label className="block text-sm font-medium text-text-700 mb-1.5">Email</label>
-              <div className="relative">
-                <HiMail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-500 group-focus-within:text-primary-400 transition-colors duration-300" />
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                  className="input-field pl-10" />
-              </div>
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
+                className="input-field" />
             </div>
             <button type="submit" disabled={loading}
-              className="btn-primary active:scale-95">
+              className="btn-primary">
               {loading ? 'Saving...' : 'Save Changes'}
             </button>
           </form>
@@ -81,24 +74,18 @@ const Profile = () => {
         <div className="bg-background-200 rounded-xl border border-background-300/30 p-6 shadow-soft animate-slide-up delay-200">
           <form onSubmit={handlePasswordChange} className="space-y-4">
             <h3 className="text-xs font-bold text-text-500 uppercase tracking-wider">Change Password</h3>
-            <div className="group">
+            <div>
               <label className="block text-sm font-medium text-text-700 mb-1.5">Current Password</label>
-              <div className="relative">
-                <HiLockClosed className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-500 group-focus-within:text-primary-400 transition-colors duration-300" />
-                <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} required
-                  className="input-field pl-10" />
-              </div>
+              <input type="password" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} required
+                className="input-field" />
             </div>
-            <div className="group">
+            <div>
               <label className="block text-sm font-medium text-text-700 mb-1.5">New Password</label>
-              <div className="relative">
-                <HiLockClosed className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-500 group-focus-within:text-primary-400 transition-colors duration-300" />
-                <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required
-                  className="input-field pl-10" />
-              </div>
+              <input type="password" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} required
+                className="input-field" />
             </div>
             <button type="submit" disabled={loading}
-              className="btn-secondary active:scale-95">
+              className="btn-secondary">
               Change Password
             </button>
           </form>

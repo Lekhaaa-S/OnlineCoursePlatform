@@ -2,14 +2,12 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../context/AuthContext'
 import toast from 'react-hot-toast'
-import { HiUser, HiMail, HiLockClosed, HiEye, HiEyeOff, HiAcademicCap } from 'react-icons/hi'
 
 const Register = () => {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
   const [loading, setLoading] = useState(false)
   const { register } = useAuth()
   const navigate = useNavigate()
@@ -33,59 +31,38 @@ const Register = () => {
   }
 
   return (
-    <div className="relative min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12 bg-background-50 overflow-hidden">
-      <div className="absolute -top-40 -right-40 w-80 h-80 rounded-full glow-orb-secondary"></div>
-      <div className="absolute -bottom-40 -left-40 w-80 h-80 rounded-full glow-orb-accent"></div>
-      <div className="absolute inset-0 dot-grid opacity-30"></div>
-      <div className="relative w-full max-w-md animate-scale-in">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12 bg-background-50">
+      <div className="w-full max-w-md animate-scale-in">
         <div className="text-center mb-8">
-          <div className="w-12 h-12 bg-primary-500 rounded-xl flex items-center justify-center mx-auto mb-6 shadow-glow-primary animate-pulse-glow">
-            <HiAcademicCap className="w-6 h-6 text-text-950" />
-          </div>
           <h1 className="text-2xl font-bold text-text-950 mb-1">Create Account</h1>
           <p className="text-sm text-text-700">Start learning today</p>
         </div>
 
-        <div className="gradient-border rounded-xl p-7 shadow-card">
+        <div className="bg-background-200 rounded-xl border border-background-300/30 p-7 shadow-card">
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="group">
+            <div>
               <label className="block text-sm font-medium text-text-700 mb-1.5">Full Name</label>
-              <div className="relative">
-                <HiUser className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-500 group-focus-within:text-primary-400 transition-colors duration-300" />
-                <input type="text" value={name} onChange={(e) => setName(e.target.value)} required placeholder="John Doe"
-                  className="input-field pl-10" />
-              </div>
+              <input type="text" value={name} onChange={(e) => setName(e.target.value)} required placeholder="John Doe"
+                className="input-field" />
             </div>
-            <div className="group">
+            <div>
               <label className="block text-sm font-medium text-text-700 mb-1.5">Email</label>
-              <div className="relative">
-                <HiMail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-500 group-focus-within:text-primary-400 transition-colors duration-300" />
-                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@example.com"
-                  className="input-field pl-10" />
-              </div>
+              <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="you@example.com"
+                className="input-field" />
             </div>
-            <div className="group">
+            <div>
               <label className="block text-sm font-medium text-text-700 mb-1.5">Password</label>
-              <div className="relative">
-                <HiLockClosed className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-500 group-focus-within:text-primary-400 transition-colors duration-300" />
-                <input type={showPassword ? 'text' : 'password'} value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Min 6 characters"
-                  className="input-field pl-10 pr-10" />
-                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-text-500 hover:text-text-900 transition-colors duration-300">
-                  {showPassword ? <HiEyeOff className="w-4 h-4" /> : <HiEye className="w-4 h-4" />}
-                </button>
-              </div>
+              <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Min 6 characters"
+                className="input-field" />
             </div>
-            <div className="group">
+            <div>
               <label className="block text-sm font-medium text-text-700 mb-1.5">Confirm Password</label>
-              <div className="relative">
-                <HiLockClosed className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-text-500 group-focus-within:text-primary-400 transition-colors duration-300" />
-                <input type={showPassword ? 'text' : 'password'} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required placeholder="Confirm password"
-                  className="input-field pl-10" />
-              </div>
+              <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required placeholder="Confirm password"
+                className="input-field" />
             </div>
 
             <button type="submit" disabled={loading}
-              className="btn-primary w-full active:scale-[0.98]">
+              className="btn-primary w-full">
               {loading ? (
                 <span className="flex items-center justify-center gap-2">
                   <div className="w-4 h-4 border-2 border-text-950 border-t-transparent rounded-full animate-spin"></div>

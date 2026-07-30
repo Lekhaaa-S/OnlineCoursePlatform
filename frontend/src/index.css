@@ -197,10 +197,13 @@ body {
     transform: scale(0.97);
   }
   .input-field {
-    @apply w-full px-4 py-2.5 bg-background-100 border border-background-300/50 rounded-lg text-sm text-text-950 placeholder:text-background-600 transition-all duration-300;
+    @apply w-full px-4 py-2.5 bg-background-200 border border-background-300/60 rounded-lg text-sm text-text-950 placeholder:text-text-600 transition-all duration-300;
+  }
+  .input-field:hover {
+    border-color: rgb(var(--background-400) / 0.6);
   }
   .input-field:focus {
-    @apply outline-none ring-2 ring-primary-500/30 border-primary-500/50 bg-background-200;
+    @apply outline-none ring-2 ring-primary-500/30 border-primary-500/60 bg-background-200;
   }
 
   /* Ambient glow orbs — the dark background stays the dominant canvas,
