@@ -2,47 +2,36 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { courseAPI } from '../../services/api'
 import toast from 'react-hot-toast'
-import { HiPlusCircle, HiTrash } from 'react-icons/hi'
+import { HiPlus, HiX } from 'react-icons/hi'
 
 const AddCourse = () => {
   const navigate = useNavigate()
-  const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
-    title: '', description: '', price: '', category: '', instructor: '', thumbnail: '',
+    title: '', description: '', price: '', instructor: '', category: '', thumbnail: '',
   })
-  const [modules, setModules] = useState([{ title: '', lessons: [{ title: '', videoUrl: '', description: '' }] }])
+  const [modules, setModules] = useState([{ title: '', lessons: [{ title: '', videoUrl: '', duration: '' }] }])
+  const [loading, setLoading] = useState(false)
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value })
 
-  const addModule = () => setModules([...modules, { title: '', lessons: [{ title: '', videoUrl: '', description: '' }] }])
-  const removeModule = (i) => setModules(modules.filter((_, idx) => idx !== i))
-
-  const updateModuleTitle = (i, value) => {
-    const updated = [...modules]
-    updated[i].title = value
-    setModules(updated)
+  const handleModuleChange = (mi, e) => {
+    const updated = [...modules]; updated[mi].title = e.target.value; setModules(updated)
   }
-
+  const handleLessonChange = (mi, li, e) => {
+    const updated = [...modules]; updated[mi].lessons[li][e.target.name] = e.target.value; setModules(updated)
+  }
+  const addModule = () => setModules([...modules, { title: '', lessons: [{ title: '', videoUrl: '', duration: '' }] }])
+  const removeModule = (mi) => setModules(modules.filter((_, i) => i !== mi))
   const addLesson = (mi) => {
-    const updated = [...modules]
-    updated[mi].lessons.push({ title: '', videoUrl: '', description: '' })
-    setModules(updated)
+    const updated = [...modules]; updated[mi].lessons.push({ title: '', videoUrl: '', duration: '' }); setModules(updated)
   }
-
   const removeLesson = (mi, li) => {
-    const updated = [...modules]
-    updated[mi].lessons = updated[mi].lessons.filter((_, idx) => idx !== li)
-    setModules(updated)
-  }
-
-  const updateLesson = (mi, li, field, value) => {
-    const updated = [...modules]
-    updated[mi].lessons[li][field] = value
-    setModules(updated)
+    const updated = [...modules]; updated[mi].lessons = updated[mi].lessons.filter((_, i) => i !== li); setModules(updated)
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    if (!form.title || !form.price) { toast.error('Title and price are required'); return }
     setLoading(true)
     try {
       await courseAPI.create({ ...form, price: Number(form.price), modules })
@@ -50,104 +39,89 @@ const AddCourse = () => {
       navigate('/admin/courses')
     } catch (err) {
       toast.error(err.response?.data?.message || 'Failed to create course')
-    } finally {
-      setLoading(false)
-    }
+    } finally { setLoading(false) }
   }
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold text-slate-800 mb-6">Add New Course</h1>
+    <div className="max-w-3xl animate-slide-up">
+      <h1 className="text-xl font-bold text-text-950 mb-6">Add New Course</h1>
       <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="bg-white rounded-2xl border border-slate-200/60 p-6 space-y-4">
-          <h2 className="text-sm font-semibold text-slate-700 uppercase tracking-wider">Course Details</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Title</label>
-              <input name="title" value={form.title} onChange={handleChange} required placeholder="Course title"
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
+        <div className="bg-background-200 rounded-xl border border-background-300/30 p-6 space-y-4">
+          <h3 className="text-xs font-bold text-text-500 uppercase tracking-wider">Basic Info</h3>
+          {[
+            { name: 'title', label: 'Title', placeholder: 'e.g. Full Stack Web Development', required: true },
+            { name: 'instructor', label: 'Instructor', placeholder: 'e.g. John Doe' },
+            { name: 'category', label: 'Category', placeholder: 'e.g. Web Development' },
+            { name: 'price', label: 'Price (₹)', placeholder: 'e.g. 1999', type: 'number', required: true },
+            { name: 'thumbnail', label: 'Thumbnail URL', placeholder: 'https://...' },
+          ].map((field) => (
+            <div key={field.name} className="group">
+              <label className="block text-sm font-medium text-text-700 mb-1.5">{field.label}</label>
+              <input type={field.type || 'text'} name={field.name} value={form[field.name]} onChange={handleChange} required={field.required} placeholder={field.placeholder}
+                className="input-field" />
             </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Category</label>
-              <select name="category" value={form.category} onChange={handleChange}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40">
-                <option value="">Select category</option>
-                <option>Web Development</option><option>Data Science</option><option>AI & ML</option>
-                <option>Mobile Development</option><option>Cloud & DevOps</option><option>Cyber Security</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Price (₹)</label>
-              <input name="price" type="number" value={form.price} onChange={handleChange} required placeholder="499"
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Instructor</label>
-              <input name="instructor" value={form.instructor} onChange={handleChange} placeholder="Instructor name"
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
-            </div>
-          </div>
+          ))}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Description</label>
-            <textarea name="description" value={form.description} onChange={handleChange} required rows="3" placeholder="Course description"
-              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40 resize-none" />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">Thumbnail URL</label>
-            <input name="thumbnail" value={form.thumbnail} onChange={handleChange} placeholder="https://..."
-              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
+            <label className="block text-sm font-medium text-text-700 mb-1.5">Description</label>
+            <textarea name="description" value={form.description} onChange={handleChange} rows="4" placeholder="Course description..."
+              className="input-field resize-none" />
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl border border-slate-200/60 p-6 space-y-4">
+        <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-semibold text-slate-700 uppercase tracking-wider">Modules & Lessons</h2>
+            <h3 className="text-xs font-bold text-text-500 uppercase tracking-wider">Modules & Lessons</h3>
             <button type="button" onClick={addModule}
-              className="inline-flex items-center gap-1 px-3 py-1.5 bg-primary/10 text-primary text-xs font-semibold rounded-lg hover:bg-primary/20 transition-all">
-              <HiPlusCircle className="w-3.5 h-3.5" /> Add Module
+              className="flex items-center gap-1 px-3 py-1.5 bg-accent-500/10 text-accent-400 font-semibold rounded-lg text-xs hover:bg-accent-500/20 transition-all duration-300 active:scale-95">
+              <HiPlus className="w-3 h-3" /> Add Module
             </button>
           </div>
+
           {modules.map((mod, mi) => (
-            <div key={mi} className="bg-slate-50 rounded-xl p-4 space-y-3 border border-slate-200/60">
-              <div className="flex items-center gap-2">
-                <span className="text-xs font-bold text-slate-400">M{mi + 1}</span>
-                <input value={mod.title} onChange={(e) => updateModuleTitle(mi, e.target.value)} placeholder="Module title" required
-                  className="flex-1 px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
+            <div key={mi} className="bg-background-200 rounded-xl border border-background-300/30 p-5 relative transition-all duration-300 hover:border-background-300/50">
+              <div className="flex items-center gap-2 mb-3">
+                <input type="text" value={mod.title} onChange={(e) => handleModuleChange(mi, e)} placeholder="Module title..."
+                  className="input-field flex-1" />
                 {modules.length > 1 && (
-                  <button type="button" onClick={() => removeModule(mi)} className="p-1.5 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all">
-                    <HiTrash className="w-4 h-4" />
+                  <button type="button" onClick={() => removeModule(mi)} className="p-1.5 text-text-500 hover:text-primary-400 hover:bg-primary-500/10 rounded-lg transition-all duration-300">
+                    <HiX className="w-4 h-4" />
                   </button>
                 )}
               </div>
-              {mod.lessons.map((lesson, li) => (
-                <div key={li} className="flex items-start gap-2 ml-6">
-                  <span className="text-xs text-slate-400 mt-2.5">L{li + 1}</span>
-                  <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2">
-                    <input value={lesson.title} onChange={(e) => updateLesson(mi, li, 'title', e.target.value)} placeholder="Lesson title" required
-                      className="px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
-                    <input value={lesson.videoUrl} onChange={(e) => updateLesson(mi, li, 'videoUrl', e.target.value)} placeholder="Video URL"
-                      className="px-3 py-2 bg-white border border-slate-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary/40" />
+              <div className="space-y-2 pl-4 border-l-2 border-background-300/30">
+                {mod.lessons.map((lesson, li) => (
+                  <div key={li} className="flex items-center gap-2">
+                    <div className="flex-1 grid grid-cols-3 gap-2">
+                      <input type="text" name="title" value={lesson.title} onChange={(e) => handleLessonChange(mi, li, e)} placeholder="Lesson title..."
+                        className="input-field text-xs px-3 py-1.5" />
+                      <input type="text" name="videoUrl" value={lesson.videoUrl} onChange={(e) => handleLessonChange(mi, li, e)} placeholder="Video URL"
+                        className="input-field text-xs px-3 py-1.5" />
+                      <input type="text" name="duration" value={lesson.duration} onChange={(e) => handleLessonChange(mi, li, e)} placeholder="Duration (e.g. 10:30)"
+                        className="input-field text-xs px-3 py-1.5" />
+                    </div>
+                    {mod.lessons.length > 1 && (
+                      <button type="button" onClick={() => removeLesson(mi, li)} className="p-1 text-text-500 hover:text-primary-400 transition-colors duration-300">
+                        <HiX className="w-3 h-3" />
+                      </button>
+                    )}
                   </div>
-                  {mod.lessons.length > 1 && (
-                    <button type="button" onClick={() => removeLesson(mi, li)} className="p-1.5 text-slate-400 hover:text-red-500 rounded-lg transition-all mt-1">
-                      <HiTrash className="w-3.5 h-3.5" />
-                    </button>
-                  )}
-                </div>
-              ))}
+                ))}
+              </div>
               <button type="button" onClick={() => addLesson(mi)}
-                className="ml-6 text-xs font-medium text-primary hover:text-primary-dark transition-colors">+ Add Lesson</button>
+                className="mt-3 flex items-center gap-1 text-xs text-text-500 hover:text-accent-400 font-medium transition-colors duration-300">
+                <HiPlus className="w-3 h-3" /> Add Lesson
+              </button>
             </div>
           ))}
         </div>
 
-        <div className="flex gap-4">
+        <div className="flex gap-3">
           <button type="submit" disabled={loading}
-            className="px-8 py-3 bg-gradient-to-r from-primary to-accent text-white font-semibold rounded-xl hover:shadow-lg transition-all disabled:opacity-60">
+            className="btn-primary active:scale-95">
             {loading ? 'Creating...' : 'Create Course'}
           </button>
           <button type="button" onClick={() => navigate('/admin/courses')}
-            className="px-8 py-3 border border-slate-300 text-slate-600 font-semibold rounded-xl hover:bg-slate-50 transition-all">
+            className="btn-secondary">
             Cancel
           </button>
         </div>

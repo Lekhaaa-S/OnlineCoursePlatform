@@ -60,8 +60,13 @@ export const enrollmentAPI = {
 }
 
 export const paymentAPI = {
-  createOrder: (data) => api.post('/payment/create-order', data),
+  createPaymentIntent: (data) => api.post('/payment/create-payment-intent', data),
   verify: (data) => api.post('/payment/verify', data),
+}
+
+export const reviewAPI = {
+  create: (data) => api.post('/reviews', data),
+  getCourseReviews: (courseId) => api.get(`/reviews/${courseId}`),
 }
 
 export default api

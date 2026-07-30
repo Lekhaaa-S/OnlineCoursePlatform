@@ -21,7 +21,7 @@ import ManageUsers from './pages/admin/ManageUsers'
 
 function App() {
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50">
+    <div className="min-h-screen flex flex-col bg-background-50">
       <Routes>
         {/* Auth pages - no navbar/footer */}
         <Route path="/login" element={<><Navbar /><div className="flex-1"><Login /></div><Footer /></>} />
