@@ -1,9 +1,63 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { Elements, CardElement, useStripe, useElements } from '@stripe/react-stripe-js'
+import { loadStripe } from '@stripe/stripe-js'
 import { courseAPI, paymentAPI } from '../services/api'
 import { useAuth } from '../context/AuthContext'
 import toast from 'react-hot-toast'
-import { HiClock, HiUsers, HiBookOpen, HiCheckCircle, HiPlay } from 'react-icons/hi'
+import { HiClock, HiUsers, HiBookOpen, HiCheckCircle, HiPlay, HiX } from 'react-icons/hi'
+
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_KEY)
+
+const cardStyle = {
+  style: {
+    base: {
+      fontSize: '15px',
+      color: '#e2e2ef',
+      fontFamily: 'Inter, system-ui, sans-serif',
+      '::placeholder': { color: '#6b7280' },
+    },
+  },
+}
+
+const PaymentForm = ({ clientSecret, courseId, onSuccess, onCancel }) => {
+  const stripe = useStripe()
+  const elements = useElements()
+  const [processing, setProcessing] = useState(false)
+  const [error, setError] = useState('')
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    if (!stripe || !elements) return
+    setProcessing(true)
+    setError('')
+    const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+      payment_method: { card: elements.getElement(CardElement) },
+    })
+    if (confirmError) { setError(confirmError.message); setProcessing(false); return }
+    try {
+      await paymentAPI.verify({ paymentIntentId: paymentIntent.id, courseId })
+      onSuccess()
+    } catch { setError('Verification failed'); setProcessing(false) }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <CardElement options={cardStyle} />
+      {error && <p className="text-sm text-red-400">{error}</p>}
+      <div className="flex gap-3">
+        <button type="submit" disabled={!stripe || processing}
+          className="flex-1 py-2.5 bg-primary-500 text-text-950 font-semibold rounded-lg text-sm hover:bg-primary-600 transition-all disabled:opacity-60">
+          {processing ? 'Processing...' : 'Pay'}
+        </button>
+        <button type="button" onClick={onCancel} disabled={processing}
+          className="px-4 py-2.5 bg-background-300 text-text-800 rounded-lg text-sm hover:bg-background-400 transition-all">
+          Cancel
+        </button>
+      </div>
+    </form>
+  )
+}
 
 const CourseDetail = () => {
   const { id } = useParams()
@@ -12,6 +66,8 @@ const CourseDetail = () => {
   const [course, setCourse] = useState(null)
   const [loading, setLoading] = useState(true)
   const [enrolling, setEnrolling] = useState(false)
+  const [showPayment, setShowPayment] = useState(false)
+  const [clientSecret, setClientSecret] = useState('')
 
   useEffect(() => {
     const fetchCourse = async () => {
@@ -32,29 +88,18 @@ const CourseDetail = () => {
     if (!isAuthenticated) { toast.error('Please login to enroll'); navigate('/login'); return }
     setEnrolling(true)
     try {
-      const { data } = await paymentAPI.createOrder({ courseId: id })
-      const options = {
-        key: data.key_id || import.meta.env.VITE_RAZORPAY_KEY_ID,
-        amount: data.amount, currency: data.currency || 'INR',
-        name: 'LearnHub', description: course.title, order_id: data.orderId,
-        handler: async (response) => {
-          try {
-            await paymentAPI.verify({
-              razorpay_order_id: response.razorpay_order_id,
-              razorpay_payment_id: response.razorpay_payment_id,
-              razorpay_signature: response.razorpay_signature, courseId: id,
-            })
-            toast.success('Enrolled successfully!')
-            navigate('/dashboard')
-          } catch { toast.error('Payment verification failed') }
-        },
-        prefill: { name: user.name, email: user.email },
-        theme: { color: '#8e3333' },
-      }
-      new window.Razorpay(options).open()
+      const { data } = await paymentAPI.createPaymentIntent({ courseId: id })
+      setClientSecret(data.clientSecret)
+      setShowPayment(true)
     } catch (err) {
       toast.error(err.response?.data?.message || 'Payment failed')
     } finally { setEnrolling(false) }
+  }
+
+  const handlePaymentSuccess = () => {
+    toast.success('Enrolled successfully!')
+    setShowPayment(false)
+    navigate('/dashboard')
   }
 
   if (loading) return <div className="min-h-screen flex items-center justify-center bg-background-50"><div className="w-8 h-8 border-4 border-primary-500 border-t-transparent rounded-full animate-spin"></div></div>
@@ -130,6 +175,23 @@ const CourseDetail = () => {
                 )}
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {showPayment && clientSecret && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70">
+          <div className="bg-background-100 rounded-2xl p-6 max-w-md w-full mx-4 border border-background-300/30 shadow-2xl animate-scale-in">
+            <div className="flex items-center justify-between mb-5">
+              <h3 className="text-lg font-bold text-text-950">Complete Payment</h3>
+              <button onClick={() => setShowPayment(false)} className="p-1 text-text-600 hover:text-text-950 transition-colors">
+                <HiX className="w-5 h-5" />
+              </button>
+            </div>
+            <p className="text-sm text-text-600 mb-5">Enter your card details to enroll in <strong className="text-text-900">{course.title}</strong></p>
+            <Elements stripe={stripePromise} options={{ clientSecret }}>
+              <PaymentForm clientSecret={clientSecret} courseId={id} onSuccess={handlePaymentSuccess} onCancel={() => setShowPayment(false)} />
+            </Elements>
           </div>
         </div>
       )}
